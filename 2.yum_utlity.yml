@@ -1,0 +1,28 @@
+---
+- name: Check Last Update and Reboot
+  hosts: balancers
+  become: true 
+
+  tasks:
+    - name: Install yum-utils package
+      yum:
+        name: yum-utils
+        state: present 
+    
+    
+    
+    
+    - name: Get last update time
+      shell: stat -c %Y /var/log/yum.log
+      register: last_update_time
+      ignore_errors: yes
+
+    - name: Get last reboot time
+      shell: uptime -s
+      register: last_reboot_time
+
+
+    - name: Display servers that need updates or reboot
+      debug:
+        var: last_reboot_time
+

@@ -1,0 +1,33 @@
+---
+- name: Check Server Status, Application, and System Updates
+  hosts: prod 
+  become: yes  # Use privilege escalation (sudo)
+
+  tasks:
+    - name: Check Server Connectivity
+      ping:
+
+    - name: Check if Application 8.2 is Running
+      shell: ps aux | grep application-8.8
+      register: app_process
+      ignore_errors: yes  # Ignore errors if the process is not found
+
+    - name: Display Application 8.2 Status
+      debug:
+        var: app_process.stdout_lines
+
+    - name: Update Package Cache
+      yum:
+        name: '*'
+        state: latest
+      when: ansible_distribution == "RedHat"
+
+    - name: Perform System Update
+      command: yum -y update
+      when: ansible_distribution == "RedHat"
+      register: update_result
+
+    - name: Reboot the Server if Updates Were Installed
+      reboot:
+      when: ansible_distribution == "RedHat" and "Complete!" in update_result.stdout
+

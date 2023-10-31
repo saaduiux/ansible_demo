@@ -1,0 +1,31 @@
+---
+- name: Check RHEL Version and Generate Report
+  hosts: balancers
+  tasks:
+    - name: Get RHEL Version
+      command: cat /etc/redhat-release
+      register: rhel_version_output
+      changed_when: false
+
+    - name: Display RHEL Version
+      debug:
+        var: rhel_version_output.stdout_lines[0]
+
+    - name: Get available updates
+      yum:
+        list: updates
+      register: available_version_output
+
+    - name: Display available updates
+      debug:
+        var: available_version_output
+
+    - name: Generate report
+      template:
+        src: your_template.j2
+        dest: /root/testing.yml
+    - name: fetch
+      fetch:
+        flat: yes
+        src: /root/testing.yml
+        dest: /root/testing_remote.yml

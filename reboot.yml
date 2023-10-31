@@ -1,0 +1,20 @@
+---
+- name: Check last reboot time on servers
+  hosts: all # Replace with your server group
+  gather_facts: no  # We don't need to gather facts
+
+  tasks:
+    - name: Get uptime information
+      command: last reboot
+      register: uptime_output
+      changed_when: false  # This command does not change the system state
+
+    - name: Extract last reboot time
+      set_fact:
+        last_reboot_info: "{{ uptime_output.stdout_lines[0] }}"
+      when: uptime_output.rc == 0
+
+    - name: Display last reboot time
+      debug:
+        var: last_reboot_info
+      when: uptime_output.rc == 0

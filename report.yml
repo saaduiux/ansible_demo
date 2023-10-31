@@ -1,0 +1,8 @@
+---
+- name: generate the report 
+  hosts: balancers
+  tasks:
+    - name: report generate 
+      copy:
+  
+

@@ -1,0 +1,13 @@
+---
+- name: Check Red Hat Subscription Status
+  hosts: balancers
+  tasks:
+    - name: Run subscription-manager status
+      command: subscription-manager list
+      register: subscription_list
+      changed_when: false  # Do not consider the task "changed" regardless of the result
+
+    - name: Display subscription status
+      debug:
+        var: subscription_list.stdout_lines
+

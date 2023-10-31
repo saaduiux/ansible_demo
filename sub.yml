@@ -1,0 +1,15 @@
+---
+- hosts: balancers
+  become: yes
+  tasks:
+  - name: Check if Redhat subscription is registered
+    command: subscription-manager identity
+    register: subscription_identity
+    check_mode: no
+
+  - name: Register Redhat subscription with --auto-attach if it is not registered
+    community.general.redhat_subscription:
+      state: present
+      auto_attach: yes
+    when: subscription_identity.stdout == ''
+    check_mode: no

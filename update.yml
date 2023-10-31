@@ -1,0 +1,26 @@
+---
+- name: Update Servers
+  hosts: all 
+  become: yes  
+
+  tasks:
+    - name: Update packages
+      yum:
+        name: '*'
+        state: latest
+      register: update_result
+
+    - name: Display update status
+      debug:
+        msg: "Server {{ inventory_hostname }} updated successfully."
+      when: update_result.changed
+
+    - name: Display no update needed
+      debug:
+        msg: "Server {{ inventory_hostname }} already up to date."
+      when: not update_result.changed
+
+    - name:  reboot the system 
+      reboot:
+        reboot_timeout: 3600
+

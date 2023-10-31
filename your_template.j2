@@ -1,0 +1,7 @@
+---
+RHEL Version: "{{ rhel_version_output.stdout_lines[0] }}"
+Available Updates:
+{% for package in available_version_output.results %}
+  - Name: "{{ package.name }}" Version: "{{ package.version }}"
+{% endfor %}
+
