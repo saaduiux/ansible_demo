@@ -1,6 +1,6 @@
 ---
 - name: Update Servers
-  hosts: all 
+  hosts: prod 
   become: yes  
 
   tasks:

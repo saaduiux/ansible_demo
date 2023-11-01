@@ -1,9 +1,15 @@
 ---
 - name: Check last reboot time on servers
-  hosts: all # Replace with your server group
-  gather_facts: no  # We don't need to gather facts
+  hosts: balancers # Replace with your server group
+  gather_facts: yes
+  tags: datatype
 
   tasks:
+
+    - name: Check OS and its distribution version
+      debug: 
+        msg: "The OS is {{ ansible_facts['distribution'] }} and version is {{ ansible_facts['distribution_version'] }}"
+  
     - name: Get uptime information
       command: last reboot
       register: uptime_output

@@ -1,0 +1,22 @@
+---
+- name: Check and Register Red Hat Subscriptions
+  hosts: balancers
+  become: yes
+  tasks:
+    - name: Check Red Hat subscription status
+      command: subscription-manager status
+      register: registration_status
+      ignore_errors: yes
+
+    - name: Display registration status
+      debug:
+        var: registration_status.stdout_lines
+      #when: registration_status.rc != 0
+
+    - name: Register Red Hat servers if not registered
+      shell: |
+        subscription-manager register --username='{{ rhsm_username }}' --password='{{ rhsm_password }}'
+        #subscription-manager register --username=sunny.rampalli@prodevans.com --password=Redhat@123
+        subscription-manager attach --auto
+      when: "'Overall Status: Unknown' in registration_status.stdout"
+      

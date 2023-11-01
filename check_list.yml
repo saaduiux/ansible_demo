@@ -1,0 +1,79 @@
+---
+- name: Complete Pre-Patching Checklist and System Update
+  hosts: 192.168.99.34
+  become: yes
+  tasks:
+    - name: Display route with IP details
+      command: ip route
+      register: route_info
+      ignore_errors: yes
+
+    - name: Display network interfaces
+      command: ip addr
+      register: network_interfaces
+
+    - name: Display server hostname
+      command: hostname
+      register: server_hostname
+
+    - name: Display server uptime
+      command: uptime
+      register: server_uptime
+
+    - name: Check Red Hat Subscription
+      command: subscription-manager status
+      register: redhat_subscription
+      ignore_errors: yes
+
+    - name: Check available updates
+      yum:
+        list: updates
+      register: available_updates
+
+    - name: Display available updates
+      debug:
+        var: available_updates
+
+    - name: Backup the system
+      shell: echo "Rahul's vmware snapshot should run here"
+      when: available_updates.results | length > 0
+
+    - name: Display update result
+      debug:
+        var: update_result
+
+    - name: Last System Reboot 
+      command: who -b
+      register: server_last_reboot
+
+    - name: Display Last System Reboot
+      debug:
+        var: "server_last_reboot.stdout_lines[0] | replace('         ', '')"
+
+    - name: Display server uptime
+      command: uptime
+      when: available_updates.results | length > 0
+      register: server_uptime_post_update
+
+    - name: Display server hostname
+      command: hostname
+      when: available_updates.results | length > 0
+      register: server_hostname_post_update
+
+    - name: Check if the system needs a reboot
+      command: needs-restarting -r
+      register: needs_reboot
+      when: available_updates.results | length > 0
+
+    - name: Display if a reboot is required
+      debug:
+        var: needs_reboot.stdout
+      when: available_updates.results | length > 0
+
+    # Add more post-update checks or tasks as needed
+
+  handlers:
+    - name: Notify system administrators about the update
+      debug:
+        msg: "System update completed. Server {{ inventory_hostname }} is up-to-date."
+

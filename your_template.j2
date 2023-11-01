@@ -1,5 +1,5 @@
 ---
-RHEL Version: "{{ rhel_version_output.stdout_lines[0] }}"
+RHEL Version: "{{ ansible_facts['distribution_version'] }}"
 Available Updates:
 {% for package in available_version_output.results %}
   - Name: "{{ package.name }}" Version: "{{ package.version }}"

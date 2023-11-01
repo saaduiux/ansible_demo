@@ -1,0 +1,7 @@
+---
+- name: runing the sever
+  hosts: balancers
+  roles:
+    - subcrition
+    - yum_utility
+    - last_reboot_time

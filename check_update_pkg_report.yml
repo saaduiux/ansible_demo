@@ -1,0 +1,23 @@
+---
+- name: report the list update 
+  hosts: balancers
+  tasks:
+  - name: Get available updates
+    yum:
+      list: updates
+    register: available_version_output
+
+  - name: Display available updates
+    debug:
+      var: available_version_output
+
+  - name: Generate report
+    template:
+      src: your_template.j2
+      dest: /root/testing.yml
+  - name: fetch
+    fetch:
+      flat: yes
+      src: /root/testing.yml
+      dest: "/root/{{ inventory_hostname }}_testing_report.txt"
+
