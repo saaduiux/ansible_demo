@@ -16,7 +16,6 @@
     - name: Register Red Hat servers if not registered
       shell: |
         subscription-manager register --username='{{ rhsm_username }}' --password='{{ rhsm_password }}'
-        #subscription-manager register --username=sunny.rampalli@prodevans.com --password=Redhat@123
         subscription-manager attach --auto
       when: "'Overall Status: Unknown' in registration_status.stdout"
       
