@@ -1,0 +1,8 @@
+---
+hostname: "192.168.61.11"
+username: "rahul@vsphere.local"
+password: "Redhat@123"
+name: "arh8-01.ipa.prodevans.com"
+datacenter: "DC1-BLR"
+snapshot_name: "snap1"
+description: "snap1_description"

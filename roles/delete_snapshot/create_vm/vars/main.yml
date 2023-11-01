@@ -1,0 +1,7 @@
+---
+hostname: "192.168.61.11"
+username: "rahul@vsphere.local"
+password: "Redhat@123"
+name: testvm
+template: Centos7-Template
+datacenter: "DC1-BLR"

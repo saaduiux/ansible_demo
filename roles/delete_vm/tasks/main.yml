@@ -1,0 +1,11 @@
+- name: delete virtual machine
+  vmware_guest:
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: False
+    name: "{{ name }}"
+    template: "{{ template }}"
+    datacenter: "{{ datacenter }}"
+    folder: "/"
+    state: absent

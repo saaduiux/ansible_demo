@@ -1,0 +1,4 @@
+---
+- hosts: all
+  roles: 
+    - take_snapshot 

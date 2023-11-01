@@ -1,0 +1,12 @@
+- name: delete virtual machine snapshot
+  community.vmware.vmware_guest_snapshot:
+    hostname: "{{ hostname }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: False
+    name: "{{ name }}"
+    datacenter: "{{ datacenter }}"
+    folder: "/"
+    state: absent 
+    snapshot_name: "{{ snapshot_name }}"
+    description: "{{ description }}"
